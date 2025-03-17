@@ -48,18 +48,132 @@
                 </section>
             </section>
             <section class="data-footer" style="height:40%;display: flex; align-items: stretch;">
-                <div style="height:100%;width:8%;margin-left:1%;margin-top:0.3%;">
+                <div style="height:100%;width:10%;margin-left:1%;margin-top:0.2%;">
                     <div class="header-btn">小巴车</div>
                     <div class="header-btn">清洁车</div>
                     <div class="header-btn">售卖车</div>
                     <div class="header-btn">物流车</div>
                 </div>
-                
+                <div style="height:100%;width:90%;display: flex;">
+                    <el-card class="vehicle-card"
+                        style="background-color: transparent;height:48%;margin-top:0.3%;margin-right:2%;">
+                        <div class="header">
+                            <h1 class="title">无人小巴车</h1>
+                            <el-tag class="license-tag" type="info" size="large">京AYZXB001</el-tag>
+                        </div>
+                        <div class="statss-container" style="width:100%;">
+                            <div class="stat-item">
+                                <el-icon :size="24" class="stats-container">
+                                    <Odometer />
+                                </el-icon>
+                                <div class="stat-content">
+                                    <span>437 km</span>
+                                    <span class="stat-label">总行驶里程</span>
+                                </div>
+                            </div>
+
+                            <div class="stat-item">
+                                <el-icon :size="24" class="stats-container">
+                                    <Clock />
+                                </el-icon>
+                                <div class="stat-content">
+                                    <span>989 h</span>
+                                    <span class="stat-label">累计运行时长</span>
+                                </div>
+                            </div>
+                        </div>
+                    </el-card>
+                    <el-card class="vehicle-card"
+                        style="background-color: transparent;height:48%;margin-top:0.3%;margin-right:2%;">
+                        <div class="header">
+                            <h1 class="title">无人小巴车</h1>
+                            <el-tag class="license-tag" type="info" size="large">京AYZMN004</el-tag>
+                        </div>
+                        <div class="statss-container" style="width:100%;">
+                            <div class="stat-item">
+                                <el-icon :size="24" class="stats-container">
+                                    <Odometer />
+                                </el-icon>
+                                <div class="stat-content">
+                                    <span>718 km</span>
+                                    <span class="stat-label">总行驶里程</span>
+                                </div>
+                            </div>
+
+                            <div class="stat-item">
+                                <el-icon :size="24" class="stats-container">
+                                    <Clock />
+                                </el-icon>
+                                <div class="stat-content">
+                                    <span>48 h</span>
+                                    <span class="stat-label">累计运行时长</span>
+                                </div>
+                            </div>
+                        </div>
+                    </el-card>
+                    <el-card class="vehicle-card"
+                        style="background-color: transparent;height:48%;margin-top:0.3%;margin-right:2%;">
+                        <div class="header">
+                            <h1 class="title">售卖车</h1>
+                            <el-tag class="license-tag" type="info" size="large">京AYZMN005</el-tag>
+                        </div>
+                        <div class="statss-container" style="width:100%;">
+                            <div class="stat-item">
+                                <el-icon :size="24" class="stats-container">
+                                    <Odometer />
+                                </el-icon>
+                                <div class="stat-content">
+                                    <span>799 km</span>
+                                    <span class="stat-label">总行驶里程</span>
+                                </div>
+                            </div>
+
+                            <div class="stat-item">
+                                <el-icon :size="24" class="stats-container">
+                                    <Clock />
+                                </el-icon>
+                                <div class="stat-content">
+                                    <span>80 h</span>
+                                    <span class="stat-label">累计运行时长</span>
+                                </div>
+                            </div>
+                        </div>
+                    </el-card>
+                    <el-card class="vehicle-card"
+                        style="background-color: transparent;height:48%;margin-top:0.3%;margin-right:1%;">
+                        <div class="header">
+                            <h1 class="title">清洁车</h1>
+                            <el-tag class="license-tag" type="info" size="large">京AYZ0S001</el-tag>
+                        </div>
+                        <div class="statss-container" style="width:100%;">
+                            <div class="stat-item">
+                                <el-icon :size="24" class="stats-container">
+                                    <Odometer />
+                                </el-icon>
+                                <div class="stat-content">
+                                    <span>972 km</span>
+                                    <span class="stat-label">总行驶里程</span>
+                                </div>
+                            </div>
+
+                            <div class="stat-item">
+                                <el-icon :size="24" class="stats-container">
+                                    <Clock />
+                                </el-icon>
+                                <div class="stat-content">
+                                    <span>79 h</span>
+                                    <span class="stat-label">累计运行时长</span>
+                                </div>
+                            </div>
+                        </div>
+                    </el-card>
+                </div>
             </section>
         </section>
     </section>
 </template>
 <script>
+import { Odometer, Clock } from '@element-plus/icons-vue';
 import LkChart from "./components/common/lk-chart.vue";
 import ECharts from 'echarts';
 import autoLoad from '@/libs/util.autoLoad';
@@ -392,19 +506,89 @@ export default {
 </script>
 
 <style lang="scss">
+.vehicle-card {
+    width: 23%;
+    height: 50%;
+    border-radius: 12px;
+    background-color: transparent;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.title {
+    color: #67c23a;
+    font-weight: bold;
+    font-size: 24px;
+    margin: -10px 0 8px 0;
+}
+
+.subtitle {
+    color: #909399;
+    font-size: 16px;
+    margin: 0 0 12px 0;
+    font-weight: 400;
+}
+
+.license-tag {
+    font-size: 16px;
+    padding: 8px 16px;
+    margin: -5px 0 8px 0;
+}
+
+.statss-container {
+    display: flex;
+    margin-top: -5%;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    background: #f5f7fa;
+    border-radius: 8px;
+    width: 50%;
+    margin-right: 4%;
+}
+
+.stat-icon {
+    margin-right: 16px;
+}
+
+.stat-content {
+    flex: 1;
+}
+
+:deep(.el-checkbox) {
+    height: auto;
+}
+
+:deep(.el-checkbox__label) {
+    font-size: 18px;
+    color: #303133;
+    font-weight: 500;
+}
+
+.stat-label {
+    display: block;
+    font-size: 12px;
+    color: #909399;
+    margin-top: 4px;
+}
+
 .header-btn {
-    height:5%;
-    margin-top:5%;
+    height: 5%;
+    margin-top: 5%;
     color: #fff;
-    background-color: rgba(#0f2672, .8);
     text-align: center;
     font-size: .8rem;
-    text-shadow: 0 0 35px greenyellow;
     cursor: pointer;
     margin-right: 1rem;
     padding: 8px 15px;
     border-radius: 4px;
-    box-shadow: 0 0 5px #8091cb inset;
     transition: all .3s linear;
     display: flex;
     justify-content: center;

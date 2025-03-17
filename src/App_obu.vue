@@ -32,8 +32,8 @@
                             <div class="card-header">
                                 <span style="color:white;font-size:20px;font-weight: bold;">今日在线设备 </span>
                                 <span style="color:rgb(103, 194, 58);font-size:15px;font-weight: bold;"> {{
-                                    onlinePercent
-                                    }}%</span>
+                        onlinePercent
+                    }}%</span>
                                 <div class="sub-title">On-line equipment</div>
                             </div>
 
@@ -134,9 +134,9 @@
                                     <div class="device-id">{{ device.id }} %</div>
                                 </div>
 
-                                <el-table :data="device.specs" :show-header="false" class="spec-table">
-                                    <el-table-column prop="key" width="100" />
-                                    <el-table-column prop="value" />
+                                <el-table :data="device.specs" :show-header="false" class="table-text">
+                                    <el-table-column prop="key" width="100" style="color:black;" />
+                                    <el-table-column prop="value" style="color:black;" />
                                 </el-table>
                             </div>
                         </el-card>
@@ -144,7 +144,7 @@
                 </section>
             </section>
             <section class="data-footer" style="height:40%;display: flex; align-items: stretch;">
-                <div class="health-calendar" style="width:40%;height:100%;">
+                <div class="health-calendar" style="width:40%;height:70%;">
                     <div class="health-title">设备健康度月历</div>
                     <div class="week-labels">
                         <div v-for="(day, index) in weekDays" :key="index" class="week-day">{{ day }}</div>
@@ -160,7 +160,7 @@
                     </div>
                 </div>
                 <el-divider direction="vertical" style="height:80%;margin-top:10px;opacity: 0.5;"></el-divider>
-                <div style="width:15%;height:100%;text-align: center;margin-top: 10px;">
+                <div style="width:15%;height:80%;text-align: center;margin-top: 10px;">
                     <div class="health-titles">2025年3月</div>
                     <el-progress type="dashboard" :percentage="80" style="margin-top:40px;">
                         <template #default="{ percentage }">
@@ -170,9 +170,9 @@
                     </el-progress>
                 </div>
                 <el-divider direction="vertical" style="height:80%;margin-top:10px;opacity: 0.5;"></el-divider>
-                <div style="width:45%;height:100%;text-align: center;margin-top: 10px;">
+                <div style="width:45%;height:80%;text-align: center;margin-top: 10px;">
                     <el-card class="transparent-card stats-container" style="height:100%;width:90%;margin-left: 5%;">
-                        <div class="section-titles" >TYPES</div>
+                        <div class="section-titles">TYPES</div>
                         <div class="stats-item" v-for="(item, index) in roadStats" :key="index">
                             <span class="label">{{ item.label }}</span>
                             <span class="value">{{ item.value }}</span>
@@ -603,10 +603,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 body {
-    overflow: hidden;
+    overflow: hidden !important;
 }
+
 .stats-container {
     width: 500px;
     background: rgba(255, 255, 255, 0.1) !important;
@@ -626,7 +627,7 @@ body {
     border-left: 3px solid #67c23a;
     padding-left: 8px;
     margin-bottom: 10px;
-    width:10%;
+    width: 10%;
 }
 
 .stats-item {
@@ -658,6 +659,7 @@ body {
     border-radius: 4px;
     font-size: 14px;
 }
+
 .section-title {
     color: rgba(255, 255, 255, 0.9);
     margin: 0 0 12px 0;
@@ -696,10 +698,10 @@ body {
     color: rgba(255, 255, 255, 0.8);
 }
 
-.spec-table {
+.table-text {
     background: transparent;
     --el-table-bg-color: transparent;
-    --el-table-text-color: rgba(255, 255, 255, 0.8);
+    --el-table-text-color: black;
 }
 
 .card {
