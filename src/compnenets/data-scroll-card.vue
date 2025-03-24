@@ -1,37 +1,39 @@
 <template>
   <section style="overflow: hidden">
     <ul class="scroll-title">
+      <li>ID</li>
       <li>时间戳</li>
-      <li>数据帧</li>
-      <li>数据长度</li>
-      <li>数据</li>
+      <li>速度km/h</li>
+      <li>优先级</li>
       <li>状态</li>
     </ul>
 
     <Vue3SeamlessScroll :list="dataList" hover :class-option="classOption" class="warp">
       <ul class="item">
         <li v-for="(entry, index) in dataList" :key="index" @click="showDetail(entry)">
-          <span :class="getClass(entry['11'])">{{ entry['0'] }}</span>
-          <span :class="getClass(entry['11'])">{{ entry['1'] }}</span>
-          <span :class="getClass(entry['11'])">{{ entry['2'] }}</span>
-          <span :class="getClass(entry['11'])">{{ concatFromThird(entry) }}</span>
-          <span :class="getClass(entry['11'])">{{ entry['11'] }}</span>
+          <span :class="getClass(entry['28'])">{{ entry['0'] }}</span>
+          <span :class="getClass(entry['28'])">{{ entry['2'] }}</span>
+          <span :class="getClass(entry['28'])">{{ entry['7'] }}</span>
+          <span :class="getClass(entry['28'])">{{ entry['15'] }}</span>
+          <span :class="getClass(entry['28'])">{{ entry['28'] }}</span>
         </li>
       </ul>
     </Vue3SeamlessScroll>
 
     <el-drawer title="报文详情" v-model="dialogVisible" direction="rtl" size="30%">
-      <div class="detail-content" style="margin-bottom: 20px">
+      <div class="detail-content" style="margin-bottom: 20px;width:100%;">
         <el-descriptions :column="1" border>
-          <el-descriptions-item label="时间戳">{{ selectedData['0'] }}</el-descriptions-item>
-          <el-descriptions-item label="数据帧">{{ selectedData['1'] }}</el-descriptions-item>
-          <el-descriptions-item label="数据长度">{{ selectedData['2'] }}</el-descriptions-item>
-          <el-descriptions-item label="完整数据">
-            {{ concatFromThird(selectedData) }}
-          </el-descriptions-item>
+          <el-descriptions-item label="ID">{{ selectedData['0'] }}</el-descriptions-item>
+          <el-descriptions-item label="时间戳">{{ selectedData['1'] }}</el-descriptions-item>
+          <el-descriptions-item label="速度km/h">{{ selectedData['7'] }}</el-descriptions-item>
+          <el-descriptions-item label="经度">{{ selectedData['4'] }}</el-descriptions-item>
+          <el-descriptions-item label="纬度">{{ selectedData['5'] }}</el-descriptions-item>
+          <el-descriptions-item label="锁星数">{{ selectedData['8'] }}</el-descriptions-item>
+          <el-descriptions-item label="优先级">{{ selectedData['15'] }}</el-descriptions-item>
+          <el-descriptions-item label="丢失的消息总数">{{ selectedData['13'] }}</el-descriptions-item>
           <el-descriptions-item label="状态">
-            <el-tag :type="selectedData['11'] === 'Normal' ? 'success' : 'danger'">
-              {{ selectedData['11'] }}
+            <el-tag :type="selectedData['28'] === 'normal' ? 'success' : 'danger'">
+              {{ selectedData['28'] }}
             </el-tag>
           </el-descriptions-item>
         </el-descriptions>
@@ -45,8 +47,8 @@
               {{ formatTimestamp(row.rawValue) }}
             </div>
             <div v-else-if="row.field === '状态'">
-              <el-tag :type="row.rawValue === 'Normal' ? 'success' : 'danger'">
-                {{ row.rawValue === 'Normal' ? '无异常' : `受到了${row.rawValue}攻击` }}
+              <el-tag :type="row.rawValue === 'normal' ? 'success' : 'danger'">
+                {{ row.rawValue === 'normal' ? '无异常' : `受到了${row.rawValue}攻击` }}
               </el-tag>
             </div>
             <div v-else>
@@ -57,6 +59,9 @@
       </el-table>
       <div style="text-align: center;">
         <el-button type="warning" plain @click="toAI">AI解析报文</el-button>
+        <el-card shadow="always" v-if="isAIloading" style="margin-top:10px;">
+          <div class="answer-content">{{ aiReport }}</div>
+        </el-card>
       </div>
     </el-drawer>
   </section>
@@ -66,7 +71,7 @@
 import { Vue3SeamlessScroll } from "vue3-seamless-scroll";
 import axios from 'axios';
 import { ElDrawer, ElDescriptions, ElDescriptionsItem, ElTag } from 'element-plus';
-
+import { toRaw } from 'vue'
 export default {
   name: "data-scroll-card",
   components: {
@@ -84,7 +89,24 @@ export default {
       dataList: [],
       dialogVisible: false,  // 控制弹窗显示
       selectedData: null,    // 存储选中行的数据
-      aiReport:null,   //存储AI返回的
+      aiReport: "",
+      isAIloading: false,
+      api: "cc7f514058514df198bb84bb04e32097.MnDkWJUVSvJuryME",
+      msgList: [{
+        my: false,
+        msg: "你好我是入侵检测系统的AI机器人,请问有什么问题可以帮助您?"
+      }],
+      msgContent: "",
+      msg: "",
+      msgForPost: [{
+        role: "system",
+        content: "你是一个用于通过报文检测路侧单元RSU是否遭受网络攻击的网页，我现在给出一条报文，请给出对报文的分析，并且给出对应的预案措施。请全部用中文回答。"
+      }, {
+        role: "user",
+        content: ""
+      }],
+      title: null,
+      result: [],
     }
   },
   created() {
@@ -93,6 +115,9 @@ export default {
       .then(response => {
         // 成功接收响应后，更新 dataList
         this.dataList = response.data;
+        this.title = response.data[0];
+        console.log(this.title);
+        this.dataList = this.dataList.splice(1);
         this.startScrolling();
       })
       .catch(error => {
@@ -108,26 +133,26 @@ export default {
     getClass(classValue) {
       return {
         'Class': true,
-        'red-font': classValue !== 'Normal', // Add 'red-font' class if classValue is not 'Normal'
-        'Timestamp': classValue == 'Normal'
+        'red-font': classValue !== 'normal', // Add 'red-font' class if classValue is not 'Normal'
+        'Timestamp': classValue == 'normal'
       };
     },
     analyzeData(data) {
       return [
         {
-          field: '时间戳',
+          field: 'ID',
           rawValue: data['0'],
-          parsedValue: this.formatTimestamp(data['0'])
+          parsedValue: data['0'],
         },
         {
-          field: '数据帧',
+          field: '时间戳',
           rawValue: data['1'],
-          parsedValue: `0x${parseInt(data['1']).toString(16).toUpperCase()}`
+          parsedValue: this.formatTimestamp(data['1'])
         },
         {
           field: '数据长度',
-          rawValue: data['2'],
-          parsedValue: `${data['2']} bytes`
+          rawValue: data['24'],
+          parsedValue: `${data['24']} bytes`
         },
         {
           field: '完整数据',
@@ -136,8 +161,8 @@ export default {
         },
         {
           field: '状态',
-          rawValue: data['11'],
-          parsedValue: data['11'] === 'Normal' ? '正常通信' : '异常告警'
+          rawValue: data['28'],
+          parsedValue: data['28'] === 'normal' ? '正常通信' : '异常告警'
         }
       ]
     },
@@ -145,7 +170,7 @@ export default {
     // 时间戳格式化方法
     formatTimestamp(timestamp) {
       if (!timestamp) return 'N/A'
-      const date = new Date(Number(timestamp) * 1000) // 假设时间戳是秒级
+      const date = new Date(Number(timestamp) * 1) // 假设时间戳是秒级
       return date.toLocaleString('zh-CN', {
         year: 'numeric',
         month: '2-digit',
@@ -174,11 +199,56 @@ export default {
       this.dialogVisible = true
     },
 
-    //接入AI
-    toAI(){
-      //TODO
-      data=this.selectedData;
-      //aiReport=
+    async toAI() {
+      try {
+        this.isAIloading = true;
+        const userQuestion = this.selectedData; // 获取用户问题
+        this.aiReport = ""; // 清空原有回答
+
+        this.msgList.push({
+          "msg": this.msg + userQuestion,
+          "my": true
+        })
+        const keys = Object.values(this.title);
+
+        // 提取 userQuestion 的值
+        var result=[];
+        const values = Object.values(userQuestion);
+        for (let i = 0; i < keys.length; i++) {
+          result[keys[i]] = values[i];
+        }
+        this.msgContent += ('YOU:' + this.msg + "\n")
+        const resultString = Object.entries(result)
+          .map(([key, value]) => `${key}为${value}`)
+          .join(', ');
+        this.msgForPost[1].content = "以下是报文,其中时间戳的单位为ms:\n" + resultString;
+        console.log(this.msgForPost[1].content)
+        this.msgLoad = true
+        // 清除消息
+        this.msg = "";
+        axios.post('https://open.bigmodel.cn/api/paas/v4/chat/completions', JSON.stringify({
+          messages: this.msgForPost, model: "glm-3-turbo"
+        }), {
+          headers: { 'content-type': 'application/json', 'Authorization': 'Bearer ' + this.api }
+        }).then(res => {
+          console.log(res);
+          let text = res.data.choices[0].message.content;
+          console.log(text);
+          this.aiReport = text;
+          this.msgList.push({
+            "msg": text,
+            "my": false
+          })
+          this.msgContent += (text + "\n")
+          this.msgLoad = false
+          this.sentext = '发送消息'
+          document.cookie = JSON.stringify(this.msgList);
+        })
+
+      } catch (error) {
+        console.error("AI请求异常:", error);
+        this.aiReport = "请求AI服务时发生错误，请稍后重试。";
+      }
     }
   }
 }

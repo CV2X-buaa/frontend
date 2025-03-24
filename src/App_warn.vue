@@ -395,7 +395,7 @@ export default {
                     this.showAlert = false
                     this.isBlinking = true
                 }, 5000)
-            }, 60000)
+            }, 600)
         },
     },
     async created() {

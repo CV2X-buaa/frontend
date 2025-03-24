@@ -15,8 +15,8 @@
         <tr v-for="(entry, index) in data" :key="index">
           <td>{{ entry.Timestamp }}</td>
           <td>{{ entry.CAN_ID }}</td>
-          <td>{{ entry.DLC }}</td>
-          <td>{{ entry.Data }}</td>
+          <td>{{ entry.speed }}</td>
+          <td>{{ entry.msgCnt }}</td>
           <td>{{ entry.Class }}</td>
         </tr>
       </tbody>
@@ -48,18 +48,15 @@ export default {
 
       for (let i = 0; i < lines.length; i++) {
         const values = lines[i].split(' '); // 根据空格分割数据
-        if (values.length === 12) { // 检查每行数据是否有12个字段
-          const entry = {
-            Timestamp: values[0],
-            CAN_ID: values[1],
-            DLC: values[2],
-            Data: values.slice(3, 11).join(' '), // 将Data字段合并为一个字符串
-            Class: values[11]
-          };
-          result.push(entry);
-        }
+        const entry = {
+          Timestamp: values[2],
+          CAN_ID: values[0],
+          speed: values[7],
+          msgCnt: values[9],
+          Class: values[29]
+        };
+        result.push(entry);
       }
-
       return result;
     }
   }

@@ -1,20 +1,20 @@
 <template>
   <section style="height: 100%;overflow: hidden">
     <ul class="scroll-title">
+      <li>ID</li>
       <li>Timestamp</li>
-      <li>Arbitration_ID</li>
-      <li>DLC</li>
-      <li>Data</li>
+      <li>Speed</li>
+      <li>msgCnt</li>
       <li>Class</li>
     </ul>
     <Vue3SeamlessScroll :list="dataList" hover class="warp">
       <ul class="item">
         <li v-for="(entry, index) in dataList" :key="index">
-          <span class="Timestamp">{{ entry['0'] }}</span>
-          <span class="Arbitration_ID">{{ entry['1'] }}</span>
-          <span class="DLC">{{ entry['2'] }}</span>
-          <span class="Data">{{ concatFromThird(entry) }}</span>
-          <span class="Class">{{ entry['11'] }}</span>
+          <span class="ID">{{ entry['0'] }}</span>
+          <span class="Timestamp">{{ entry['2'] }}</span>
+          <span class="Speed">{{ entry['7'] }}</span>
+          <span class="msgCnt">{{ entry['9'] }}</span>
+          <span class="Class">{{ entry['28'] }}</span>
         </li>
       </ul>
     </Vue3SeamlessScroll>
@@ -43,6 +43,7 @@ export default {
       .then(response => {
         // 成功接收响应后，更新 dataList
         this.dataList = response.data;
+        this.dataList = this.dataList.splice(1);
         this.startScrolling();
       })
       .catch(error => {
