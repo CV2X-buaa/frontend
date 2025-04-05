@@ -14,7 +14,7 @@
         </div>
 
         <div class="header-content">
-          车载入侵监测系统
+          车路云态势感知入侵检测系统
         </div>
         <div class="header-btn-list">
           <div class="header-btn" @click="toggleFullscreen">{{ isFullscreen ? '退出大屏' : '打开大屏' }}</div>

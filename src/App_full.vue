@@ -13,7 +13,7 @@
           </ul>
         </div>
         <div class="header-content">
-          车载入侵监测系统
+          车路云态势感知入侵检测系统
         </div>
         <div class="header-btn-list">
           <div class="header-btn" @click="toggleFullscreen">{{ isFullscreen ? '退出大屏' : '打开大屏' }}</div>
@@ -628,7 +628,7 @@ export default {
         resizeEnable: true,
         zoom: 15,
         center: new AMap.LngLat(centerLng, centerLat),
-        mapStyle: "amap://styles/darkblue",
+        mapStyle: "amap://styles/normal",
       });
       if (this.centerMap) {
         this.drawStaticPoint()
