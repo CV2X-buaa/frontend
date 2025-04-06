@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import AppFull from './App_full.vue';
+import AppFull from './App_home.vue';
 import AppTable from './App_table.vue';
 import AppDetect from './App_detect.vue';
 import AppWarn from './App_warn.vue';

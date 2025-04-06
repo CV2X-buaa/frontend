@@ -3,7 +3,7 @@
     <div class="map-container">
       <div id="map-container" ref="mapContainer"></div>
     </div>
-    <section class="data-contain">
+    <section class="data-contain" style="height:100vh;">
       <section class="data-header">
         <div class="header-date">
           <div class="date-time">{{ nowDate.time }}</div>
@@ -21,35 +21,16 @@
           <div class="header-btn" @click="closeDataCenter">关闭</div>
         </div>
       </section>
-      <section class="data-contain-center">
+      <section class="data-contain-center" style="height:65%;">
         <section class="data-contain-left">
-          <section class="left-item item-line left-one">
+          <section class="left-item item-line left-one" style="height:33.3%;">
             <div class="item-title">
               <span class="line"></span>
               流量峰值环比分析
             </div>
             <LkChart class="left-item-chat" key="PeakCycleRatioOption" :option="PeakCycleRatioOption" />
           </section>
-          <section class="left-item left-two">
-            <div class="passage-left item-line">
-              <div class="item-title"><span class="line"></span>车速</div>
-              <LkChart class="age-item-chat" key="SpeedOption" :option="SpeedOption" />
-            </div>
-            <div class="passage-right">
-              <div class="passage-sex item-line">
-                <div class="item-title"><span class="line"></span>时间段</div>
-                <LkChart class="age-item-chat" key="TimeOption" :option="TimeOption" />
-              </div>
-              <div class="passage-rate item-line">
-                <div class="item-title"><span class="line"></span>今日流量预测</div>
-                <div class="rate-text">
-                  <span class="status"></span>
-                  <span>正常</span>
-                </div>
-              </div>
-            </div>
-          </section>
-          <section class="left-item item-line left-three">
+          <section class="left-item item-line left-three" style="height:33.3%;">
             <div class="item-title">
               <SmallIco />
               今日流量分析
@@ -77,7 +58,7 @@
               <RevenueScrollCard key="revenue-scroll" class="revenue-scroll" />
             </div>
           </section>
-          <section class="left-item item-line left-four">
+          <section class="left-item item-line left-four" style="height:33.3%;">
             <div class="item-title">
               <span class="line"></span>
               流量峰值统计
@@ -107,62 +88,16 @@
             </div>
           </section>
         </section>
-        <section class="data-contain-right">
-          <section class="right-item item-line right-one">
-            <div class="item-title">
-              <SmallIco />
-              当前监测车辆
-            </div>
-            <section class="risk-body">
-              <div class="risk-left">
-                <img class="risk-avatar"
-                  src="https://twm.autohome.com.cn/cjh.autoimg.cn/chejiahaodfs/g25/M03/C0/10/960x0_q100_autohomecar__ChtliGPbLGOAHIg_AAC_7-HpimM974.jpg?text/TGlua-i9pueUn-a0uw==/fontSize/12">
-                <div class="risk-driver">
-                  <div class="driver-p">
-                    <span class="driver-title">车型：</span>
-                    <span class="driver-name" style="color: #fdd239">XPENG P7</span>
-                  </div>
-                  <!-- <div class="driver-p">
-                    <span class="driver-title">平台：</span>
-                    <span class="driver-name" style="color: #fdd239">CarHacking</span>
-                  </div> -->
-                </div>
-              </div>
-              <div class="risk-right">
-                <div class="info-body">
-                  <!-- <div class="info-item">
-                    <span class="info-item-title">车载时间：</span>
-                    <span class="info-item-content">{{ nowDate.day }} {{ nowDate.time }}</span>
-                  </div> -->
-                  <div class="info-item">
-                    <span class="info-item-title">车载时间：</span>
-                    <span class="info-item-content">{{ nowDate.day }} {{ nowDate.time }}</span>
-                  </div>
-                  <div class="info-item">
-                    <span class="info-item-title">IP：</span>
-                    <span class="info-item-content">192.168.137.1</span>
-                  </div>
-                  <div class="info-item">
-                    <span class="info-item-title">车辆所在地：</span>
-                    <span class=" info-item-content"
-                      style="color: #c35647;font-weight: bold;font-size: 1.1rem">北京市海淀区</span>
-                  </div>
-                  <div class="info-item">
-
-                  </div>
-                </div>
-              </div>
-            </section>
-          </section>
-          <section class="right-item item-line right-two">
+        <section class="data-contain-right" style="height:525.2px;">
+          <section class="right-item item-line right-two" style="height:33.3%;">
             <div class="item-title">
               <span class="line"></span>
               区域流量分析
             </div>
             <LkChart class="right-item-chat" key="ComplaintRiskOption" :option="ComplaintRiskOption" />
           </section>
-          <section class=" right-item  right-three ">
-            <section class="complain-body">
+          <section class=" right-item  right-three " style="height:33.3%;">
+            <section class=" complain-body">
               <div class="complain-hot item-line ">
                 <div class="item-title"><span class="line"></span>常见攻击</div>
                 <LkChart class="complain-chart" key="RecentComplaintsHotWordsOption"
@@ -174,7 +109,7 @@
               </div>
             </section>
           </section>
-          <section class="right-item item-line right-four">
+          <section class="right-item item-line right-four" style="height:33.3%;">
             <div class="item-title">
               <span class="line"></span>
               车载流量统计
@@ -186,11 +121,23 @@
           </section>
         </section>
       </section>
-      <section class="data-footer">
+      <section class="data-footer" style="height:28%;margin-top:1%;width:100%;">
         <DataScrollCard key="DataScrollCard" />
       </section>
     </section>
   </section>
+  <transition name="fade">
+    <div v-if="showAlert" class="attack-alert" :class="{ 'alert-blink': isBlinking }">
+      <div class="alert-content">
+        <el-icon :size="50">
+          <WarnTriangleFilled />
+        </el-icon>
+        <h3>安全告警！</h3>
+        <p>IP为 {{ attackInfo.ip }} 的RSU正在遭受</p>
+        <p class="attack-type">{{ attackInfo.type }} 攻击！</p>
+      </div>
+    </div>
+  </transition>
 </template>
 <script>
 import LkChart from "./components/common/lk-chart.vue";
@@ -267,6 +214,22 @@ export default {
     }
   },
   methods: {
+    setupTimer() {
+      this.timer = setInterval(() => {
+        this.showAlert = true
+        // 更新攻击信息（模拟随机数据）
+        this.attackInfo = {
+          ip: `192.168.1.${Math.floor(Math.random() * 255)}`,
+          type: ['DoS', 'SQL注入', 'XSS', '暴力破解'][Math.floor(Math.random() * 4)]
+        }
+
+        // 闪烁5秒后自动关闭
+        setTimeout(() => {
+          this.showAlert = false
+          this.isBlinking = true
+        }, 5000)
+      }, 600)
+    },
     toggleFullscreen() {
       const maxRef = this.$refs.maxRef
       this.isFullscreen = !this.isFullscreen;
@@ -884,6 +847,10 @@ export default {
       color: #EEEEEE;
     }
   }
+}
+
+.left-item-chat {
+  width: 100%;
 }
 </style>
 <style lang="scss" scoped>
