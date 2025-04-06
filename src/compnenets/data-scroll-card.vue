@@ -105,7 +105,7 @@ export default {
       msg: "",
       msgForPost: [{
         role: "system",
-        content: "你是一个用于通过报文检测路侧单元RSU是否遭受网络攻击的网页，我现在给出一条报文，请给出对报文的分析，并且给出对应的预案措施。请全部用中文回答。对于回答，请使用'\n'划分自然段。"
+        content: "你是一个用于通过报文检测路侧单元RSU是否遭受网络攻击的网页，我现在给出一条报文，请给出对报文的分析，并且给出对应的预案措施。请全部用中文回答。对于回答，请使用'\n'划分自然段。请以文本形式给出。不要有markdown格式的加粗文本。"
       }, {
         role: "user",
         content: ""
@@ -366,7 +366,6 @@ $warp-margin-bottom: 5px;
   white-space: pre-wrap;
 }
 
-/* From Uiverse.io by G4b413l */
 .three-body {
   --uib-size: 35px;
   --uib-speed: 0.8s;

@@ -75,10 +75,10 @@
                             @click="innerBtnSelect(1)">
                             全局总览
                         </div>
-                        <div class="inner-btn " :class="{ 'inner-btn-active': btnFlag === 2 }"
+                        <!-- <div class="inner-btn " :class="{ 'inner-btn-active': btnFlag === 2 }"
                             @click="innerBtnSelect(2)">
                             报文全察
-                        </div>
+                        </div> -->
                         <div class="inner-btn " :class="{ 'inner-btn-active': btnFlag === 3 }"
                             @click="innerBtnSelect(3)">
                             路侧设备
@@ -241,9 +241,31 @@ export default {
                     address: "北京市海淀区",
                     browser: "CarHacking",
                     status: 1,
-                }
+                },
+                {
+                    b0: 116.343550,//121.489261,//经度
+                    b1: 40.002784,//31.238939,//纬度
+                    avatar: 'https://tse3.mm.bing.net/th/id/OIP.N82t-yA2vs7SwqO8I2-X0AHaEH?rs=1&pid=ImgDetMain',
+                    name: "小米 su7",
+                    ip: "192.168.135.4",
+                    address: "北京市海淀区",
+                    browser: "CarHacking",
+                    status: 1,
+                },
+                {
+                    b0: 116.341261,//经度
+                    b1: 40.008939,//纬度
+                    avatar: 'https://th.bing.com/th/id/R.8b24098649ea465df4f97969df17da1d?rik=RyhdqShqGIhgGg&riu=http%3a%2f%2fs3.xchuxing.com%2fxchuxing%2fforum%2f201809%2f20%2f110538oss93x9sa1ga939f.jpg&ehk=TKtcmQT9rSsb53rZdkanCQeHuIITCCc%2bunu5rYqTbNE%3d&risl=&pid=ImgRaw&r=0',
+                    name: "比亚迪 秦",
+                    ip: "192.168.114.2",
+                    address: "北京市海淀区",
+                    browser: "CarHacking",
+                    status: 1,
+                },
             ],//动态的
-            staticList: [],
+            staticList: [
+
+            ],
             staticMarkers: [],
             dynamicMarkers: [],
             weekDays: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
@@ -262,6 +284,28 @@ export default {
                 ip: '192.168.1.100',
                 type: 'DDoS'
             },
+            rsus: [
+                {
+                    type: 'rsu',
+                    b0: 116.3575,  // 第一个RSU经度
+                    b1: 40.0093,   // 第一个RSU纬度
+                    name: "摄像头",
+                    ip: "10.0.0.1",
+                    connections: 42,
+                    address: "北京市海淀区",
+                    avatar: 'https://bpic.588ku.com/back_origin_min_pic/23/06/16/ef7e541c1b6b819d381190cd5016edac.jpg!/fw/750/quality/99/unsharp/true/compress/true',
+                },
+                {
+                    type: 'rsu',
+                    b0: 116.3498,  // 第二个RSU经度
+                    b1: 40.0089,   // 第二个RSU纬度  
+                    name: "激光雷达",
+                    ip: "10.0.0.2",
+                    connections: 35,
+                    address: "北京市海淀区",
+                    avatar:'https://xqimg.imedao.com/16bb5420eac89583fbb23cba.jpeg',
+                }
+            ],
         }
     },
     methods: {
@@ -473,64 +517,7 @@ export default {
             else if (flag === 4) { this.$router.push({ path: '/detect' }); }
 
 
-            // switch (idx) {
-            //   case 1:
-            //     let data = [
-            //       {
-            //         b0: 116.310547,//经度
-            //         b1: 39.992828,//纬度
-            //         avatar: 'https://th.bing.com/th/id/R.c6717d5d9cbd2719744c3a1331e0c2d7?rik=7P36MV75V4%2bZxA&pid=ImgRaw&r=0',
-            //         name: "Cyber2098",
-            //         ip: "192.168.137.2",
-            //         address: "北京市海淀区",
-            //         browser: "CarHacking",
-            //         status: 1,
-            //       },
-            //       {
-            //         b0: 116.365425,//经度
-            //         b1: 39.961060,//纬度
-            //         avatar: 'https://pic4.zhimg.com/v2-7b2cc8b9be68be1617a149751ec97513_1440w.jpg',
-            //         name: "Cyber2152",
-            //         ip: "192.168.137.3",
-            //         address: "北京市海淀区",
-            //         browser: "CarHacking",
-            //         status: 1,
-            //       },
-            //       {
-            //         b0: 116.323141,//经度
-            //         b1: 40.003631,//纬度
-            //         avatar: 'https://th.bing.com/th/id/OIP.Bxk7oKXJGUo1EvGXIxgG-gHaEK?rs=1&pid=ImgDetMain',
-            //         name: "Cyber2079",
-            //         ip: "192.168.137.4",
-            //         address: "北京市海淀区",
-            //         browser: "CarHacking",
-            //         status: 1,
-            //       },
-            //       {
-            //         b0: 116.313014,//经度
-            //         b1: 39.970714,//纬度
-            //         avatar: 'https://th.bing.com/th/id/R.029a2e021cf6d333a5db3970eb26db87?rik=cEEDH%2bDDJv3QcQ&riu=http%3a%2f%2fpic.bizhi360.com%2fbbpic%2f36%2f8236.jpg&ehk=6Ihz9eY7kRQveWagaSCmq6Ax5Zn1VJW4MvRf6GqPB7Q%3d&risl=&pid=ImgRaw&r=0',
-            //         name: "Cyber2037",
-            //         ip: "192.168.137.2",
-            //         address: "北京市海淀区",
-            //         browser: "CarHacking",
-            //         status: 1,
-            //       },
-            //       {
-            //         b0: 116.365425,//经度
-            //         b1: 39.961060,//纬度
-            //         avatar: 'https://th.bing.com/th/id/R.c6717d5d9cbd2719744c3a1331e0c2d7?rik=7P36MV75V4%2bZxA&pid=ImgRaw&r=0',
-            //         name: "Cyber2052",
-            //         ip: "192.168.137.5",
-            //         address: "北京市海淀区",
-            //         browser: "CarHacking",
-            //         status: 1,
-            //       }
-            //       // ...
-            //     ]
-            //     this.drawDynamicPoint(data)
-            //     break;
-            // }
+
         },
         // 初始化当前时间
         initNowDate() {
@@ -637,7 +624,7 @@ export default {
                     if (car.b0 && car.b1) {
                         let marker = new AMap.Marker({
                             position: [car.b0, car.b1],
-                            content: '<div class="newMarkerClass"></div>'
+                            content: '<div class="newMarkerClass"></div>',
                         });
                         // 添加点击事件
                         marker.on('click', function () {
@@ -674,20 +661,98 @@ export default {
         },
         // 初始化地图
         initMap() {
-            let centerLng = 116.350153;//116.343550;//121.489261;
-            let centerLat = 40.009571;//39.982784; //31.238939;
+            let centerLng = 116.350124;//116.343550;//121.489261;
+            let centerLat = 40.0087;//39.982784; //31.238939;
             const AMap = window.AMap
             this.centerMap = new AMap.Map(this.$refs.mapContainer, {
                 resizeEnable: true,
-                zoom: 15,
+                zoom: 14,
                 center: new AMap.LngLat(centerLng, centerLat),
                 mapStyle: "amap://styles/normal",
             });
             if (this.centerMap) {
                 this.drawStaticPoint()
-                this.drawDynamicPoint()
+                this.drawDynamicPoint();
+                // 新增RSU标记
+                this.createRsuMarkers();
             }
         },
+        // 新增RSU标记创建方法
+        createRsuMarkers() {
+            this.rsus.forEach(rsu => {
+                const marker = new AMap.Marker({
+                    position: [rsu.b0, rsu.b1],
+                    content: this.getRsuMarkerContent(),
+                    // offset: new AMap.Pixel(-70, -24) 
+                });
+
+                marker.on('click', () => this.showRsuInfo(rsu));
+                this.centerMap.add(marker);
+                this.dynamicMarkers.push(marker);
+            });
+        },
+
+        // RSU标记样式
+        getRsuMarkerContent() {
+            return `
+      <div class="custom-marker">
+        <div class="marker-icon rsu-marker">
+          R
+        </div>
+        <div class="marker-pulse rsu-pulse"></div>
+      </div>
+    `;
+        },
+
+        // RSU信息窗口
+        showRsuInfo(rsu) {
+            const content = `
+         <section class="map-info-box">
+         <div class="map-info-title">实时RSU信息</div>
+         <div  class="map-info-body">
+            <div class="risk-left">
+                <img class="risk-avatar" src="${rsu.avatar || 'https://pic.5tu.cn/uploads/allimg/1601/251545562670.jpg'}">
+                <div class="risk-driver">
+                  <div class="driver-p">
+                    <span class="driver-title">名称：</span>
+                    <span class="driver-name" style="color: #fdd239">${rsu.name}</span>
+                  </div>
+                  
+                </div>
+              </div>
+              <div class="risk-right">
+                <div class="info-body">
+                  <div class="info-item">
+                    <span class="info-item-title">车载时间：</span>
+                    <span class="info-item-content">${this.nowDate.day} ${this.nowDate.time}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-item-title">IP：</span>
+                    <span class="info-item-content">${rsu.ip || '未知'}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-item-title">连接数：</span>
+                     <span class="info-item-content" style="color: #c35647;font-weight: bold;font-size: 1.1rem">
+                     ${rsu.connections || '未知'}</span>
+                  </div>
+                  <!--<div class="info-fact">
+                     <span class="ripple-container"></span>
+                  </div>-->
+                </div>
+              </div>
+</div>
+
+            </section>
+        `;
+
+            this.infoWindow = new AMap.InfoWindow({
+                content,
+                offset: new AMap.Pixel(0, -30)
+            });
+            this.infoWindow.open(this.centerMap, [rsu.b0, rsu.b1]);
+        },
+
+
         closeDataCenter() {
             this.cancelFullScreen()
             this.$router.push({ path: '/' })
@@ -747,11 +812,127 @@ export default {
 </script>
 
 <style lang="scss">
+/* RSU标记样式 */
+.rsu-marker {
+    background: #00a8ff !important;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+}
+
+.rsu-pulse {
+    border: 2px solid #00a8ff;
+    animation: rsu-pulse 1.5s infinite;
+}
+
+@keyframes rsu-pulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+/* 原有车辆标记保持橙色不变 */
+.newMarkerClass {
+    background-color: #e3ad0b;
+}
+
+.custom-marker {
+    position: relative;
+    width: 24px;
+    height: 24px;
+}
+
+/* 修改后的样式 */
+.custom-marker {
+    position: relative;
+    width: 48px;
+    /* 容器扩大确保波纹动画可见 */
+    height: 48px;
+    transform: translate(-50%, -100%);
+    /* 让地图坐标点对应标记底部中心 */
+}
+
+.marker-icon {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    position: absolute;
+    z-index: 2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+    /* 新增居中定位 */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    /* 关键：将图标中心对准容器中心 */
+}
+
+.marker-pulse {
+    width: 14px;
+    /* 改为与图标相同尺寸 */
+    height: 14px;
+    /* 而不是继承容器的100% */
+    position: absolute;
+    background: currentColor;
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: pulse 1.5s infinite;
+
+    /* 新增居中定位 */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    /* 关键：初始位置与图标重叠 */
+}
+
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        /* 保持居中缩放 */
+        opacity: 0.4;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(4);
+        /* 以中心为原点放大 */
+        opacity: 0;
+    }
+}
+
+.info-window {
+    background: rgba(19, 42, 114, 0.9);
+    padding: 12px;
+    border-radius: 6px;
+    color: #fff;
+    min-width: 180px;
+
+    h3 {
+        margin: 0 0 8px 0;
+        color: #00d8ff;
+    }
+
+    p {
+        margin: 4px 0;
+        font-size: 12px;
+    }
+}
+
 .newStaticMarker {
     width: 2px;
     height: 2px;
     border-radius: 100%;
-    background-imAge: radial-gradient(#fffaa9, rgb(190, 166, 255));
+    background-imAge: radial-gradient(#94f6a6, rgb(190, 166, 255));
 }
 
 .newMarkerClass {
@@ -760,7 +941,7 @@ export default {
     position: relative;
     outline: none;
     //background-imAge: radial-gradient(yellow, rgb(253, 3, 9));
-    background-color: #e3ad0b;
+    background-color: #0be33a;
 
     border-radius: 100%;
     transform-origin: 0 0;

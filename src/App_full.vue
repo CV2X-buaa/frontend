@@ -74,9 +74,9 @@
             <div class="inner-btn " :class="{ 'inner-btn-active': btnFlag === 1 }" @click="innerBtnSelect(1)">
               全局总览
             </div>
-            <div class="inner-btn " :class="{ 'inner-btn-active': btnFlag === 2 }" @click="innerBtnSelect(2)">
+            <!-- <div class="inner-btn " :class="{ 'inner-btn-active': btnFlag === 2 }" @click="innerBtnSelect(2)">
               报文全察
-            </div>
+            </div> -->
             <div class="inner-btn " :class="{ 'inner-btn-active': btnFlag === 3 }" @click="innerBtnSelect(3)">
               路侧设备
             </div>

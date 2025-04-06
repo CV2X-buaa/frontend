@@ -21,9 +21,9 @@
                     <div class="header-btn" @click="closeDataCenter">关闭</div>
                 </div>
             </section>
-            <section class="data-contain-center" style="position: absolute;bottom:0;left:30%;">
+            <section class="data-contain-center" style="height:55%;">
                 <section class="data-contain-inner" style="margin-left:30%;width: 40%;">
-                    <section class="inner-btn-list list" style="margin-bottom:2%;">
+                    <section class="inner-btn-list">
                         <div class="inner-btn " :class="{ 'inner-btn-active': btnFlag === 1 }"
                             @click="innerBtnSelect(1)">
                             全局总览
@@ -40,33 +40,22 @@
                             @click="innerBtnSelect(4)">
                             车辆监控
                         </div>
-                        <div class="inner-btn " :class="{ 'inner-btn-active': btnFlag === 5 }"
-                            @click="innerBtnSelect(5)">
-                            事件预警
-                        </div>
                     </section>
                 </section>
             </section>
+            <section class="data-footer" style="height:38%;margin-top:1%;">
+                <DataScrollCard key="DataScrollCard" />
+            </section>
         </section>
     </section>
-    <transition name="fade">
-        <div v-if="showAlert" class="attack-alert" :class="{ 'alert-blink': isBlinking }">
-            <div class="alert-content">
-                <el-icon :size="50">
-                    <WarnTriangleFilled />
-                </el-icon>
-                <h3>安全告警！</h3>
-                <p>IP为 {{ attackInfo.ip }} 的RSU正在遭受</p>
-                <p class="attack-type">{{ attackInfo.type }} 攻击！</p>
-            </div>
-        </div>
-    </transition>
 </template>
 <script>
+import { Odometer, Clock } from '@element-plus/icons-vue';
 import LkChart from "./components/common/lk-chart.vue";
+import ECharts from 'echarts';
 import autoLoad from '@/libs/util.autoLoad';
 import ChartCard from "./compnenets/chart-card.vue";
-import DataScrollCard from "./compnenets/data-scroll-card.vue";
+import DataScrollCard from "./compnenets/car-scroll-card.vue";
 import RevenueScrollCard from "./compnenets/revenue-scroll-card.vue";
 import SmallIco from "./compnenets/small-ico.vue";
 import CountTo from 'vue-count-to'
@@ -115,7 +104,7 @@ export default {
                 date: '',
             },
             // 地图相关
-            btnFlag: 5,
+            btnFlag: 4,
             centerMap: null,
             dynamicList: [
                 {
@@ -133,12 +122,7 @@ export default {
             staticMarkers: [],
             dynamicMarkers: [],
             initOptions: { renderer: 'canvas' },
-            showAlert: false,
-            isBlinking: true,
-            attackInfo: {
-                ip: '192.168.1.100',
-                type: 'DDoS'
-            },
+
         }
     },
     methods: {
@@ -376,27 +360,8 @@ export default {
         },
         //清除定时器
         clearTimer() {
-            if (this.timer) {
-                clearInterval(this.timer)
-                this.timer = null
-            }
-        },
-        setupTimer() {
-            this.timer = setInterval(() => {
-                this.showAlert = true
-                // 更新攻击信息（模拟随机数据）
-                this.attackInfo = {
-                    ip: `192.168.1.${Math.floor(Math.random() * 255)}`,
-                    type: ['DoS', 'SQL注入', 'XSS', '暴力破解'][Math.floor(Math.random() * 4)]
-                }
-
-                // 闪烁5秒后自动关闭
-                setTimeout(() => {
-                    this.showAlert = false
-                    this.isBlinking = true
-                }, 5000)
-            }, 600)
-        },
+            clearInterval(this.timer);
+        }
     },
     async created() {
         this.initNowDate()
@@ -409,7 +374,6 @@ export default {
     mounted() {
         window.addEventListener('resize', this.handleWindowResize);
         this.toggleFullscreen()
-        this.setupTimer()
     },
     beforeDestroy() {
         window.removeEventListener('resize', this.handleWindowResize);
@@ -419,154 +383,89 @@ export default {
 </script>
 
 <style lang="scss">
-.attack-alert {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #ff4d4f;
-    color: white;
-    padding: 30px 50px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 9999;
-    text-align: center;
-}
-
-.alert-content {
-    position: relative;
-}
-
-.alert-icon {
-    font-size: 40px;
-    margin-bottom: 15px;
-}
-
-.attack-type {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 10px 0;
-}
-
-/* 闪烁动画 */
-.alert-blink {
-    animation: blink 0.5s ease-in-out 5;
-}
-
-@keyframes blink {
-    0% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.3;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.5s;
-}
-
-.fade-enter,
-.fade-leave-to {
-    opacity: 0;
-}
-
-.list {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding-bottom: 10px;
-    pointer-events: auto;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    min-width: 600px;
-}
-
-.control-panel {
-    width: 600px;
+.vehicle-card {
+    width: 23%;
+    height: 50%;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: transparent;
 }
 
-.panel-section {
-    margin-bottom: 24px;
-    padding: 16px;
-    border: 1px solid #ebeef5;
-    border-radius: 8px;
-}
-
-.section-title {
-    color: #303133;
-    font-size: 16px;
-    margin: 0 0 16px 10px;
-}
-
-.control-item {
+.header {
     display: flex;
-    align-items: center;
-    margin: 12px 0;
-    padding: 8px;
-    background: #f5f7fa;
-    border-radius: 6px;
+    justify-content: space-between;
+    margin-bottom: 25px;
 }
 
-.control-label {
-    margin-left: 12px;
-    font-size: 14px;
-    color: #606266;
+.title {
+    color: #67c23a;
+    font-weight: bold;
+    font-size: 24px;
+    margin: -10px 0 8px 0;
 }
 
-.number-buttons {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-}
-
-.number-buttons .el-button {
-    padding: 8px 12px;
-    min-width: auto;
-}
-
-.number-buttons .active {
-    background-color: #409eff;
-    color: white;
-    border-color: #409eff;
-}
-
-.action-section {
-    text-align: center;
-    margin-top: 20px;
-}
-
-:deep(.el-switch__label) {
+.subtitle {
     color: #909399;
+    font-size: 16px;
+    margin: 0 0 12px 0;
+    font-weight: 400;
 }
 
-:deep(.el-switch__label.is-active) {
-    color: #409eff;
+.license-tag {
+    font-size: 16px;
+    padding: 8px 16px;
+    margin: -5px 0 8px 0;
+}
+
+.statss-container {
+    display: flex;
+    margin-top: -5%;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    background: #f5f7fa;
+    border-radius: 8px;
+    width: 50%;
+    margin-right: 4%;
+}
+
+.stat-icon {
+    margin-right: 16px;
+}
+
+.stat-content {
+    flex: 1;
+}
+
+:deep(.el-checkbox) {
+    height: auto;
+}
+
+:deep(.el-checkbox__label) {
+    font-size: 18px;
+    color: #303133;
+    font-weight: 500;
+}
+
+.stat-label {
+    display: block;
+    font-size: 12px;
+    color: #909399;
+    margin-top: 4px;
 }
 
 .header-btn {
     height: 5%;
     margin-top: 5%;
     color: #fff;
-    background-color: rgba(#0f2672, .8);
     text-align: center;
     font-size: .8rem;
-    text-shadow: 0 0 35px greenyellow;
     cursor: pointer;
     margin-right: 1rem;
     padding: 8px 15px;
     border-radius: 4px;
-    box-shadow: 0 0 5px #8091cb inset;
     transition: all .3s linear;
     display: flex;
     justify-content: center;
