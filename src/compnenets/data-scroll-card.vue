@@ -63,6 +63,11 @@
           <div class="answer-content">{{ aiReport }}</div>
         </el-card>
       </div>
+      <div class="three-body" style="margin-left:45%;margin-top:15px;" v-if="loader">
+        <div class="three-body__dot"></div>
+        <div class="three-body__dot"></div>
+        <div class="three-body__dot"></div>
+      </div>
     </el-drawer>
   </section>
 </template>
@@ -100,13 +105,14 @@ export default {
       msg: "",
       msgForPost: [{
         role: "system",
-        content: "你是一个用于通过报文检测路侧单元RSU是否遭受网络攻击的网页，我现在给出一条报文，请给出对报文的分析，并且给出对应的预案措施。请全部用中文回答。"
+        content: "你是一个用于通过报文检测路侧单元RSU是否遭受网络攻击的网页，我现在给出一条报文，请给出对报文的分析，并且给出对应的预案措施。请全部用中文回答。对于回答，请使用'\n'划分自然段。"
       }, {
         role: "user",
         content: ""
       }],
       title: null,
       result: [],
+      loader: false,
     }
   },
   created() {
@@ -201,7 +207,7 @@ export default {
 
     async toAI() {
       try {
-        this.isAIloading = true;
+        this.loader=true;
         const userQuestion = this.selectedData; // 获取用户问题
         this.aiReport = ""; // 清空原有回答
 
@@ -212,7 +218,7 @@ export default {
         const keys = Object.values(this.title);
 
         // 提取 userQuestion 的值
-        var result=[];
+        var result = [];
         const values = Object.values(userQuestion);
         for (let i = 0; i < keys.length; i++) {
           result[keys[i]] = values[i];
@@ -239,6 +245,8 @@ export default {
             "msg": text,
             "my": false
           })
+          this.loader=false;
+          this.isAIloading = true;
           this.msgContent += (text + "\n")
           this.msgLoad = false
           this.sentext = '发送消息'
@@ -269,6 +277,10 @@ $warp-height: calc(100% - #{$scroll-title-height});
 $warp-font-size: .9rem;
 $warp-border-color: #686868;
 $warp-margin-bottom: 5px;
+
+:deep(.el-drawer) {
+  background: rgba(#e4edff, .8);
+}
 
 .scroll-title {
   list-style: none;
@@ -348,5 +360,114 @@ $warp-margin-bottom: 5px;
 /* 确保 el-drawer 正常显示 */
 .el-drawer {
   z-index: 9999 !important;
+}
+
+.answer-content{
+  white-space: pre-wrap;
+}
+
+/* From Uiverse.io by G4b413l */
+.three-body {
+  --uib-size: 35px;
+  --uib-speed: 0.8s;
+  --uib-color: #5D3FD3;
+  position: relative;
+  display: inline-block;
+  height: var(--uib-size);
+  width: var(--uib-size);
+  animation: spin78236 calc(var(--uib-speed) * 2.5) infinite linear;
+}
+
+.three-body__dot {
+  position: absolute;
+  height: 100%;
+  width: 30%;
+}
+
+.three-body__dot:after {
+  content: '';
+  position: absolute;
+  height: 0%;
+  width: 100%;
+  padding-bottom: 100%;
+  background-color: var(--uib-color);
+  border-radius: 50%;
+}
+
+.three-body__dot:nth-child(1) {
+  bottom: 5%;
+  left: 0;
+  transform: rotate(60deg);
+  transform-origin: 50% 85%;
+}
+
+.three-body__dot:nth-child(1)::after {
+  bottom: 0;
+  left: 0;
+  animation: wobble1 var(--uib-speed) infinite ease-in-out;
+  animation-delay: calc(var(--uib-speed) * -0.3);
+}
+
+.three-body__dot:nth-child(2) {
+  bottom: 5%;
+  right: 0;
+  transform: rotate(-60deg);
+  transform-origin: 50% 85%;
+}
+
+.three-body__dot:nth-child(2)::after {
+  bottom: 0;
+  left: 0;
+  animation: wobble1 var(--uib-speed) infinite calc(var(--uib-speed) * -0.15) ease-in-out;
+}
+
+.three-body__dot:nth-child(3) {
+  bottom: -5%;
+  left: 0;
+  transform: translateX(116.666%);
+}
+
+.three-body__dot:nth-child(3)::after {
+  top: 0;
+  left: 0;
+  animation: wobble2 var(--uib-speed) infinite ease-in-out;
+}
+
+@keyframes spin78236 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes wobble1 {
+
+  0%,
+  100% {
+    transform: translateY(0%) scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(-66%) scale(0.65);
+    opacity: 0.8;
+  }
+}
+
+@keyframes wobble2 {
+
+  0%,
+  100% {
+    transform: translateY(0%) scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(66%) scale(0.65);
+    opacity: 0.8;
+  }
 }
 </style>

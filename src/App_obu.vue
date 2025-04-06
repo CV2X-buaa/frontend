@@ -111,10 +111,6 @@
                             @click="innerBtnSelect(4)">
                             车辆监控
                         </div>
-                        <div class="inner-btn " :class="{ 'inner-btn-active': btnFlag === 5 }"
-                            @click="innerBtnSelect(5)">
-                            事件预警
-                        </div>
                     </section>
                 </section>
                 <section class="data-contain-right">
@@ -143,42 +139,8 @@
                     </section>
                 </section>
             </section>
-            <section class="data-footer" style="height:40%;display: flex; align-items: stretch;">
-                <div class="health-calendar" style="width:40%;height:70%;">
-                    <div class="health-title">设备健康度月历</div>
-                    <div class="week-labels">
-                        <div v-for="(day, index) in weekDays" :key="index" class="week-day">{{ day }}</div>
-                    </div>
-                    <div class="health-grid">
-                        <div v-for="(day, index) in calendarDays" :key="index" class="calendar-day" :class="{
-                        'other-month': !day.isCurrentMonth,
-                        'healthy': day.isCurrentMonth && day.healthy,
-                        'unhealthy': day.isCurrentMonth && !day.healthy
-                    }" :title="dayTitle(day)">
-                            {{ day.date }}
-                        </div>
-                    </div>
-                </div>
-                <el-divider direction="vertical" style="height:80%;margin-top:10px;opacity: 0.5;"></el-divider>
-                <div style="width:15%;height:80%;text-align: center;margin-top: 10px;">
-                    <div class="health-titles">2025年3月</div>
-                    <el-progress type="dashboard" :percentage="80" style="margin-top:40px;">
-                        <template #default="{ percentage }">
-                            <span class="percentage-value">{{ percentage }}%</span>
-                            <span class="percentage-label">健康度</span>
-                        </template>
-                    </el-progress>
-                </div>
-                <el-divider direction="vertical" style="height:80%;margin-top:10px;opacity: 0.5;"></el-divider>
-                <div style="width:45%;height:80%;text-align: center;margin-top: 10px;">
-                    <el-card class="transparent-card stats-container" style="height:100%;width:90%;margin-left: 5%;">
-                        <div class="section-titles">TYPES</div>
-                        <div class="stats-item" v-for="(item, index) in roadStats" :key="index">
-                            <span class="label">{{ item.label }}</span>
-                            <span class="value">{{ item.value }}</span>
-                        </div>
-                    </el-card>
-                </div>
+            <section class="data-footer" style="height:33%;margin-top:1%;">
+                <DataScrollCard key="DataScrollCard" />
             </section>
         </section>
     </section>
@@ -251,10 +213,6 @@ export default {
             staticList: [],
             staticMarkers: [],
             dynamicMarkers: [],
-            weekDays: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-            calendarDays: [],
-            currentMonth: 3,// 3月,
-            percentage: 80,
             onlinePercent: 80,
             faultPercent: 0,
             devices: [
@@ -281,10 +239,70 @@ export default {
                 { label: '活动', value: 9.6 },
                 { label: '其他', value: 47 }
             ],
-
+            dynamicList: [
+                // 车辆1
+                {
+                    type: 'car',
+                    b0: 116.350153,
+                    b1: 40.009571,
+                    avatar: 'https://example.com/car1.jpg',
+                    name: "XPENG P7",
+                    ip: "192.168.137.101",
+                    speed: "60km/h",
+                    driver: "张师傅",
+                    status: 1
+                },
+                // 车辆2（坐标微调）
+                {
+                    type: 'car',
+                    b0: 116.350145,
+                    b1: 40.009565,
+                    avatar: 'https://example.com/car2.jpg',
+                    name: "Tesla Model3",
+                    ip: "192.168.137.102",
+                    speed: "55km/h",
+                    driver: "李师傅",
+                    status: 1
+                },
+                // 车辆3
+                {
+                    type: 'car',
+                    b0: 116.350160,
+                    b1: 40.009580,
+                    avatar: 'https://example.com/car3.jpg',
+                    name: "BYD Han",
+                    ip: "192.168.137.103",
+                    speed: "63km/h",
+                    driver: "王师傅",
+                    status: 1
+                },
+                // RSU1
+                {
+                    type: 'rsu',
+                    b0: 116.350150,
+                    b1: 40.009570,
+                    avatar: 'https://example.com/rsu.png',
+                    name: "RSU-001",
+                    ip: "10.10.1.101",
+                    version: "v2.3.1",
+                    status: 1
+                },
+                // RSU2
+                {
+                    type: 'rsu',
+                    b0: 116.350155,
+                    b1: 40.009575,
+                    avatar: 'https://example.com/rsu.png',
+                    name: "RSU-002",
+                    ip: "10.10.1.102",
+                    version: "v2.3.2",
+                    status: 1
+                }
+            ]
         }
     },
     methods: {
+        //全屏
         toggleFullscreen() {
             const maxRef = this.$refs.maxRef
             this.isFullscreen = !this.isFullscreen;
@@ -317,12 +335,6 @@ export default {
         },
 
 
-        // 生成随机数据
-        generateRandomInteger(min, max) {
-            min = Math.ceil(min);
-            max = Math.floor(max);
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        },
         // 模拟刷新数据
         refreshData() {
             // 中间地图数据
@@ -355,7 +367,6 @@ export default {
             else if (flag === 2) { this.$router.push({ path: '/table' }); }
             else if (flag === 3) { this.$router.push({ path: '/obu' }); }
             else if (flag === 4) { this.$router.push({ path: '/detect' }); }
-            else if (flag === 5) { this.$router.push({ path: '/warn' }); }
 
         },
 
@@ -499,7 +510,7 @@ export default {
                 resizeEnable: true,
                 zoom: 15,
                 center: new AMap.LngLat(centerLng, centerLat),
-                mapStyle: "amap://styles/darkblue",
+                mapStyle: "amap://styles/normal",
             });
             if (this.centerMap) {
                 this.drawStaticPoint()
@@ -720,7 +731,7 @@ body {
 
 .sub-title {
     font-size: 14px;
-    color: #939393;
+    color: #373737;
 }
 
 .progress {

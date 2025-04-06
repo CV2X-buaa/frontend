@@ -81,15 +81,11 @@
                         </div>
                         <div class="inner-btn " :class="{ 'inner-btn-active': btnFlag === 3 }"
                             @click="innerBtnSelect(3)">
-                            路测设备
+                            路侧设备
                         </div>
                         <div class="inner-btn " :class="{ 'inner-btn-active': btnFlag === 4 }"
                             @click="innerBtnSelect(4)">
                             车辆监控
-                        </div>
-                        <div class="inner-btn " :class="{ 'inner-btn-active': btnFlag === 5 }"
-                            @click="innerBtnSelect(5)">
-                            事件预警
                         </div>
                     </section>
                 </section>
@@ -475,7 +471,6 @@ export default {
             else if (flag === 2) { this.$router.push({ path: '/table' }); }
             else if (flag === 3) { this.$router.push({ path: '/obu' }); }
             else if (flag === 4) { this.$router.push({ path: '/detect' }); }
-            else if (flag === 5) { this.$router.push({ path: '/warn' }); }
 
 
             // switch (idx) {

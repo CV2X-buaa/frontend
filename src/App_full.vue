@@ -78,7 +78,7 @@
               报文全察
             </div>
             <div class="inner-btn " :class="{ 'inner-btn-active': btnFlag === 3 }" @click="innerBtnSelect(3)">
-              路测设备
+              路侧设备
             </div>
             <div class="inner-btn " :class="{ 'inner-btn-active': btnFlag === 4 }" @click="innerBtnSelect(4)">
               车辆监控
